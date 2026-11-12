@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // ---------------------------------------------------
 // Scene
 // ---------------------------------------------------
@@ -69,7 +69,44 @@ controls.target.set(
     0
 );
 
+const gltfLoader =
+    new GLTFLoader();
 
+let player;
+let interactiveModel;
+
+const keys = {};
+
+const raycaster =
+    new THREE.Raycaster();
+
+// ---------------------------------------------------
+// GLTFLoader
+// ---------------------------------------------------
+gltfLoader.load(
+    "./models/player.glb",
+
+    function(gltf)
+    {
+        player =
+            gltf.scene;
+
+        player.position.set(
+            0,
+            0,
+            8
+        );
+
+        player.scale.setScalar(
+            2
+        );
+
+        player.rotation.y =
+            Math.PI;
+
+        scene.add(player);
+    }
+);
 // ---------------------------------------------------
 // Ground
 // ---------------------------------------------------
