@@ -72,7 +72,12 @@ controls.target.set(
 const gltfLoader =
     new GLTFLoader();
 
+const clock =
+    new THREE.Clock();
+
 let player;
+let chestMixer;
+let chestAction;
 let interactiveModel;
 const keys = {};
 
@@ -109,7 +114,7 @@ gltfLoader.load(
 );
 //treasure chest
 gltfLoader.load(
-    "./models/loot.glb",
+    "./models/chest.glb",
 
     function(gltf)
     {
@@ -131,6 +136,37 @@ gltfLoader.load(
         scene.add(
             interactiveModel
         );
+
+        const chestOpenAnimation =
+            gltf.animations.find(
+                (animation) =>
+                    animation.name === "Chest_Open"
+            );
+
+        if (!chestOpenAnimation)
+        {
+            console.error(
+                "Chest_Open animation not found in chest.glb."
+            );
+            return;
+        }
+
+        chestMixer =
+            new THREE.AnimationMixer(
+                interactiveModel
+            );
+
+        chestAction =
+            chestMixer.clipAction(
+                chestOpenAnimation
+            );
+
+        chestAction.setLoop(
+            THREE.LoopOnce
+        );
+
+        chestAction.clampWhenFinished =
+            true;
     }
 );
 
@@ -1054,6 +1090,11 @@ window.addEventListener(
     "keydown",
     (event) => {
         keys[event.key] = true;
+
+        if (!event.repeat && event.key.toLowerCase() === "e")
+        {
+            checkInteraction();
+        }
     }
 );
 
@@ -1071,6 +1112,8 @@ window.addEventListener(
 function animate() {
 
     requestAnimationFrame(animate);
+    const deltaTime =
+        clock.getDelta();
 
 if (bannerAndFountainMoving) {
     // 1. Slowly rotate the fountain glow
@@ -1246,12 +1289,67 @@ if (bannerAndFountainMoving) {
         );
 }
 
+if(chestMixer)
+{
+    chestMixer.update(deltaTime);
+}
+
     controls.update();
 
     renderer.render(
         scene,
         camera
     );
+}
+
+function checkInteraction()
+{
+    if(!player || !interactiveModel)
+    {
+        return;
+    }
+
+    const direction =
+        new THREE.Vector3(
+            0,
+            0,
+            1
+        );
+
+    direction.applyQuaternion(
+        player.quaternion
+    );
+
+    const rayOrigin =
+        player.position.clone();
+
+    rayOrigin.y += 1;
+
+    raycaster.set(
+        rayOrigin,
+        direction
+    );
+
+    const hits =
+        raycaster.intersectObject(
+            interactiveModel,
+            true
+        );
+
+    if(hits.length > 0)
+    {
+        openChest();
+    }
+}
+function openChest()
+{
+    console.log("Chest opened!");
+
+    if(chestAction)
+    {
+        chestAction.reset();
+        chestAction.play();
+    }
 }
 
 animate();
