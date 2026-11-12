@@ -74,7 +74,6 @@ const gltfLoader =
 
 let player;
 let interactiveModel;
-
 const keys = {};
 
 const raycaster =
@@ -83,6 +82,7 @@ const raycaster =
 // ---------------------------------------------------
 // GLTFLoader
 // ---------------------------------------------------
+//player
 gltfLoader.load(
     "./models/player.glb",
 
@@ -107,6 +107,33 @@ gltfLoader.load(
         scene.add(player);
     }
 );
+//treasure chest
+gltfLoader.load(
+    "./models/loot.glb",
+
+    function(gltf)
+    {
+        interactiveModel =
+            gltf.scene;
+
+        interactiveModel.position.set(
+            -5,
+            0,
+            2
+        );
+
+        interactiveModel.scale.set(
+            2,
+            2,
+            2
+        );
+
+        scene.add(
+            interactiveModel
+        );
+    }
+);
+
 // ---------------------------------------------------
 // Ground
 // ---------------------------------------------------
