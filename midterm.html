@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Three.js Midterm Project</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #instructions {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.65);
+            color: white;
+            font-family: Arial, sans-serif;
+            z-index: 10;
+        }
+
+        #instructions h3 {
+            margin-top: 0;
+        }
+
+        #instructions p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <div id="instructions">
+        <h3>Controls</h3>
+        <p>1 - Toggle fountain glow</p>
+        <p>2 - Toggle banner and fountain animation</p>
+        <p>3 - Toggle gate spotlight</p>
+        <p>4 - Toggle gate opening and closing</p>
+    </div>
+
+    <script type="module" src="./midterm.js"></script>
+
+</body>
+
+</html>
