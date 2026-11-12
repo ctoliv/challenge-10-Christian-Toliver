@@ -1023,6 +1023,19 @@ window.addEventListener(
         }
     }
 );
+window.addEventListener(
+    "keydown",
+    (event) => {
+        keys[event.key] = true;
+    }
+);
+
+window.addEventListener(
+    "keyup",
+    (event) => {
+        keys[event.key] = false;
+    }
+);
 
 // ---------------------------------------------------
 // Animation Loop
@@ -1168,6 +1181,43 @@ if (bannerAndFountainMoving) {
         -gateAnimation * Math.PI / 2;
     rightGatePivot.rotation.y =
         gateAnimation * Math.PI / 2;
+
+    if(player)
+{
+    if(keys["ArrowUp"])
+    {
+        player.position.z -= 0.1;
+    }
+
+    if(keys["ArrowDown"])
+    {
+        player.position.z += 0.1;
+    }
+
+    if(keys["ArrowLeft"])
+    {
+        player.position.x -= 0.1;
+    }
+
+    if(keys["ArrowRight"])
+    {
+        player.position.x += 0.1;
+    }
+
+    player.position.x =
+        THREE.MathUtils.clamp(
+            player.position.x,
+            -8,
+            8
+        );
+
+    player.position.z =
+        THREE.MathUtils.clamp(
+            player.position.z,
+            -5,
+            8
+        );
+}
 
     controls.update();
 
